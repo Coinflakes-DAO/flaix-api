@@ -83,13 +83,15 @@ export class CallOption {
     contract = new Contract(underlying, erc20ABI, provider);
     const totalUnderlyingSupply = await contract.balanceOf(address);
 
-    const underlyingToken = await ERC20Token.import(underlying);
-    await underlyingToken.save();
-
-    return new CallOption({
+    const callOption = new CallOption({
       ...erc20Props,
       maturityTimestamp,
       underlying
     });
+    await callOption.save();
+
+    await ERC20Token.import(underlying);
+
+    return callOption;
   }
 }

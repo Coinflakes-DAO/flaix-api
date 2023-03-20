@@ -1,34 +1,58 @@
-// Start apollo graphql server
-import { ApolloServer } from '@apollo/server';
-import fs from 'fs';
-
-import { startStandaloneServer } from '@apollo/server/standalone';
+import express, { Express, Request, Response } from 'express';
 import { db } from '../lib/db';
+import { Vault } from '../lib/vault';
+const app: Express = express();
+const port = 4000;
 
-const typeDefs = '' + fs.readFileSync('src/schema.graphql');
-
-const resolvers = {
-  CallOption: {
-    underlying: async (parent: any) => {
-      return db.erc20Token.findUnique({
-        where: { address: parent.underlying }
-      });
-    }
-  },
-  Query: {
-    callOptions: () =>
-      db.callOption.findMany({
-        orderBy: { maturityTimestamp: 'desc' }
-      })
+app.get('/vault/:address', async (req: Request, res: Response) => {
+  const vault = await Vault.import(req.params.address);
+  if (!vault) {
+    res.status(404).json({ error: 'Not found' });
+    return;
   }
-};
+  return res.json(vault);
+});
 
-const server = new ApolloServer({ typeDefs, resolvers });
-
-async function main() {
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 }
+app.get('/call-options', async (req: Request, res: Response) => {
+  const callOptions = await db.callOption.findMany({
+    orderBy: { maturityTimestamp: 'desc' }
   });
-  console.log(`🚀  FLAIX API ready at: ${url}`);
-}
-main();
+  res.json(callOptions);
+});
+
+app.get('/call-option/:address', async (req: Request, res: Response) => {
+  const callOption = await db.callOption.findUnique({
+    where: { address: req.params.address }
+  });
+  if (!callOption) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
+  res.json(callOption);
+});
+
+app.get('/erc20-token/:address', async (req: Request, res: Response) => {
+  let erc20Token = await db.erc20Token.findUnique({
+    where: { address: req.params.address }
+  });
+  if (!erc20Token) {
+    erc20Token = await db.callOption.findUnique({
+      select: {
+        address: true,
+        name: true,
+        symbol: true,
+        decimals: true
+      },
+      where: { address: req.params.address }
+    });
+  }
+  if (!erc20Token) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
+  res.json(erc20Token);
+});
+
+app.listen(port, () => {
+  console.log(`FLAIX API listening at http://localhost:${port}`);
+});

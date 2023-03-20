@@ -12,7 +12,7 @@ export const erc20ABI = [
   'function totalSupply() public view returns (uint256)'
 ];
 
-type ERC20ConstructorProps = {
+export type ERC20ConstructorProps = {
   address: string;
   name: string;
   symbol: string;
@@ -53,7 +53,7 @@ export class ERC20Token {
       decimals,
       name,
       symbol
-    });
+    }).save();
   }
 
   static async load(address: string): Promise<ERC20Token | null> {
