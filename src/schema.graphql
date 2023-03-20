@@ -1,0 +1,19 @@
+type ERC20 {
+  address: String!
+  name: String!
+  symbol: String!
+  decimals: Int!
+}
+
+type CallOption {
+  address: String!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  underlying: ERC20!
+  maturityTimestamp: Int!
+}
+
+type Query {
+  callOptions: [CallOption]
+}

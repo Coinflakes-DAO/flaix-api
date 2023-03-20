@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Erc20Token {
+  address  String @id
+  symbol   String
+  name     String
+  decimals Int
+}
+
+model CallOption {
+  address           String @id
+  name              String
+  symbol            String
+  decimals          Int
+  maturityTimestamp Int
+  underlying        String
+}

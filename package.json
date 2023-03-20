@@ -1,0 +1,30 @@
+{
+  "name": "flaix-api",
+  "version": "0.1.0",
+  "description": "API for Coinflakes AI Investment Vault",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.15.3",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "prisma": "^4.11.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@apollo/server": "^4.5.0",
+    "@prisma/client": "^4.11.0",
+    "ethers": "^5.7.0",
+    "graphql": "^16.6.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4"
+  }
+}
