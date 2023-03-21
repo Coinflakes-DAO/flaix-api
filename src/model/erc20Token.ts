@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { db } from './db';
-import { getProvider } from './providers';
+import { getProvider } from '../lib/providers';
 
 export const erc20ABI = [
   'function approve(address, uint256) public returns (bool)',
@@ -13,13 +12,6 @@ export const erc20ABI = [
 ];
 
 export type ERC20ConstructorProps = {
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-};
-
-type ERC20DbProps = {
   address: string;
   name: string;
   symbol: string;
@@ -53,24 +45,6 @@ export class ERC20Token {
       decimals,
       name,
       symbol
-    }).save();
-  }
-
-  static async load(address: string): Promise<ERC20Token | null> {
-    address = getAddress(address);
-    const props: ERC20DbProps | null = await db.erc20Token.findUnique({
-      where: { address }
     });
-    if (!props) return null;
-    return new ERC20Token({ ...props });
-  }
-
-  async save(): Promise<ERC20Token> {
-    await db.erc20Token.upsert({
-      where: { address: this.address },
-      create: { ...this },
-      update: { ...this }
-    });
-    return this;
   }
 }
