@@ -8,4 +8,9 @@
     "mochaExplorer.env": {
         "NODE_ENV": "test"
     },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#352D10",
+        "titleBar.activeBackground": "#4A3F16",
+        "titleBar.activeForeground": "#FBFAF3"
+    },
 }
