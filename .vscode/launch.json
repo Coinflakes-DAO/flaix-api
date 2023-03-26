@@ -2,17 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "flaix-api: run all tests",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "mocha --exit --require ts-node/register --recursive 'test/**/*.test.ts'",
-      "envFile": "${workspaceFolder}/.env.test",
-      "env": {
-        "NODE_ENV": "test"
-      }
-    },
-    {
-      "name": "flaix-api: graphql server",
+      "name": "flaix-api: run server",
       "type": "node-terminal",
       "request": "launch",
       "command": "ts-node src/sbin/flaix-ws.ts",
