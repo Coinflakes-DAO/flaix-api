@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import URI from 'urijs';
 
 export type CoingeckoClientConstructorProps = {
@@ -25,8 +25,11 @@ export class CoingeckoClient {
     return new CoingeckoClient(props);
   }
 
-  async call<T>(endpoint: string): Promise<T> {
-    const response = await this.axios.get(endpoint);
+  async call<T>(
+    endpoint: string,
+    request?: AxiosRequestConfig<any>
+  ): Promise<T> {
+    const response = await this.axios.get(endpoint, request);
     return response.data as T;
   }
 
@@ -37,6 +40,20 @@ export class CoingeckoClient {
     return (await this.call(`/coins/${chain}/contract/${contractAddress}`)) as {
       id: string;
     };
+  }
+
+  async tokenPriceUsd(
+    address: string,
+    chain = 'ethereum' as string
+  ): Promise<number> {
+    type Response = { [key: string]: { usd: number; last_updated_at: number } };
+    const response = (await this.call(`/simple/token_price/${chain}`, {
+      params: {
+        contract_addresses: address,
+        vs_currencies: 'usd'
+      }
+    })) as Response;
+    return response[address].usd;
   }
 }
 

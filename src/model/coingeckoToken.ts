@@ -17,6 +17,14 @@ export class CoingeckoToken extends ERC20Token {
     super(props);
     this.coingeckoId = props.coingeckoId;
   }
+
+  getPriceUsd(): Promise<number> {
+    return coingecko.tokenPriceUsd(this.address);
+  }
+}
+
+export async function getTokenPriceUsd(address: string): Promise<number> {
+  return await coingecko.tokenPriceUsd(address);
 }
 
 export async function importCoingeckoToken(
