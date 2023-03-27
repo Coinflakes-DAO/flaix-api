@@ -25,6 +25,9 @@
     "dotenv": "^16.0.3",
     "ethers": "^5.7.0",
     "express": "^4.18.2",
-    "urijs": "^1.19.11"
+    "express-winston": "^4.2.0",
+    "urijs": "^1.19.11",
+    "winston": "^3.8.2",
+    "winston-express": "^0.1.1"
   }
 }

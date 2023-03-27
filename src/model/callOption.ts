@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish, Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { erc20ABI, ERC20Token } from './erc20Token';
+import { erc20ABI, ERC20Token, importErc20Token } from './erc20Token';
 import { getProvider } from '../lib/providers';
 
 export const callOptionABI = [
@@ -53,7 +53,7 @@ export class CallOption {
       contract.vault()
     ]);
 
-    const erc20Props: ERC20Token = await ERC20Token.import(address);
+    const erc20Props: ERC20Token = await importErc20Token(address);
     const callOption = new CallOption({
       ...erc20Props,
       maturityTimestamp,

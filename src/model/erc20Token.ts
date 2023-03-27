@@ -30,21 +30,21 @@ export class ERC20Token {
     this.name = props.name;
     this.symbol = props.symbol;
   }
+}
 
-  static async import(address: string): Promise<ERC20Token> {
-    address = getAddress(address);
-    const provider = getProvider();
-    const contract = new ethers.Contract(address, erc20ABI, provider);
-    const [decimals, name, symbol] = await Promise.all([
-      contract.decimals(),
-      contract.name(),
-      contract.symbol()
-    ]);
-    return new ERC20Token({
-      address,
-      decimals,
-      name,
-      symbol
-    });
-  }
+export async function importErc20Token(address: string): Promise<ERC20Token> {
+  address = getAddress(address);
+  const provider = getProvider();
+  const contract = new ethers.Contract(address, erc20ABI, provider);
+  const [decimals, name, symbol] = await Promise.all([
+    contract.decimals(),
+    contract.name(),
+    contract.symbol()
+  ]);
+  return new ERC20Token({
+    address,
+    decimals,
+    name,
+    symbol
+  });
 }

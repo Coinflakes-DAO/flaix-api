@@ -5,7 +5,11 @@ import {
   keccak256,
   toUtf8Bytes
 } from 'ethers/lib/utils';
-import { ERC20ConstructorProps, ERC20Token } from './erc20Token';
+import {
+  ERC20ConstructorProps,
+  ERC20Token,
+  importErc20Token
+} from './erc20Token';
 import { etherscan, EtherscanLogEvent } from '../lib/etherscan';
 import { getProvider } from '../lib/providers';
 
@@ -16,7 +20,10 @@ export const vaultABI = [
   'function minimalOptionsMaturity() external view returns (uint256)',
   'function name() external view returns (string)',
   'function symbol() external view returns (string)',
-  'function totalSupply() external view returns (uint256)'
+  'function totalSupply() external view returns (uint256)',
+  'function allowedAssets() external view returns (uint256)',
+  'function allowedAsset(uint256) external view returns (address)',
+  'function isAssetAllowed(address) public view returns (bool)'
 ];
 
 export const vaultInterface = new Interface(vaultABI);
@@ -53,7 +60,7 @@ export class Vault {
     ).toNumber();
   }
 
-  static async import(address: string): Promise<Vault | null> {
+  static async importVault(address: string): Promise<Vault | null> {
     address = getAddress(address);
     const provider = getProvider();
     const contract = new Contract(address, vaultABI, provider);
@@ -64,7 +71,7 @@ export class Vault {
       contract.minimalOptionsMaturity()
     ]);
     vaultProps = { admin, minimalOptionsMaturity };
-    const erc20 = await ERC20Token.import(address);
+    const erc20 = await importErc20Token(address);
     vaultProps = { ...vaultProps, ...erc20 };
     return new Vault(vaultProps);
   }
@@ -88,5 +95,17 @@ export class Vault {
         maturity: (parsedLog.args[7] as BigNumber).toNumber()
       };
     });
+  }
+
+  static async importAllowedAssets(address: string): Promise<string[]> {
+    address = getAddress(address);
+    const provider = getProvider();
+    const contract = new Contract(address, vaultABI, provider);
+    const allowedAssets = await contract.allowedAssets();
+    const allowedAssetAddresses = [];
+    for (let i = 0; i < allowedAssets; i++) {
+      allowedAssetAddresses.push(await contract.allowedAsset(i));
+    }
+    return allowedAssetAddresses;
   }
 }
