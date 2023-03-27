@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { useAsync } from '../lib/asyncMiddleware';
-import { Vault } from '../model/vault';
+import { useAsync } from '../../lib/asyncMiddleware';
+import { Vault } from '../../model/vault';
 
 export const getVault = useAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {

@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { useAsync } from '../lib/asyncMiddleware';
-import { Vault } from '../model/vault';
+import { useAsync } from '../../lib/asyncMiddleware';
+import { Vault } from '../../model/vault';
 
-export const getCallOptions = useAsync(
+export const getAllowedAssets = useAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
-      return await Vault.importCallOptions(req.params.vaultAddress);
+      return await Vault.importAllowedAssets(req.params.vaultAddress);
     } catch (err: any) {
       if (err?.code === 'CALL_EXCEPTION') {
         res.status(400).json({ error: 'address is no vault' });

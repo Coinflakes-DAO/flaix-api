@@ -1,10 +1,10 @@
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { Request, Response, NextFunction } from 'express';
-import { useAsync } from '../lib/asyncMiddleware';
-import { getProvider } from '../lib/providers';
-import { importCoingeckoToken } from '../model/coingeckoToken';
-import { vaultABI } from '../model/vault';
+import { useAsync } from '../../lib/asyncMiddleware';
+import { getProvider } from '../../lib/providers';
+import { importCoingeckoToken } from '../../model/coingeckoToken';
+import { vaultABI } from '../../model/vault';
 
 export const getAllowedAsset = useAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { useAsync } from '../lib/asyncMiddleware';
-import { CallOption } from '../model/callOption';
-import { importErc20Token } from '../model/erc20Token';
+import { useAsync } from '../../lib/asyncMiddleware';
+import { CallOption } from '../../model/callOption';
+import { importErc20Token } from '../../model/erc20Token';
 
 export const getCallOption = useAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {
