@@ -1,3 +1,4 @@
+import { keys } from 'lodash';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import URI from 'urijs';
 
@@ -53,7 +54,9 @@ export class CoingeckoClient {
         vs_currencies: 'usd'
       }
     })) as Response;
-    return response[address].usd;
+    const key0 = keys(response)[0];
+    const price = response[key0].usd;
+    return price;
   }
 }
 
