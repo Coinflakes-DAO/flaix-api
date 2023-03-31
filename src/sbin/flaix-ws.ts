@@ -3,10 +3,12 @@ import express, { Express } from 'express';
 import { errorLogger, requestId, requestLogger } from '../lib/logger';
 import { vaultRouter } from '../routes/vaultRouter';
 import { pricesRouter } from '../routes/pricesRouter';
+import cors from 'cors';
 
 const app: Express = express();
 const port = 4000;
 
+app.use(cors());
 app.use(requestId);
 app.use(requestLogger);
 
