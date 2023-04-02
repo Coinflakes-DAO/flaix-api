@@ -37,6 +37,9 @@ const requestId = (req: Request, res: Response, next: NextFunction) => {
 
 const requestLogger = expressWinston.logger({
   winstonInstance: logger,
+  msg: (req: Request, res: Response) =>
+    `${req.method} ${req.url} ${res.statusCode} ${res.statusMessage}`,
+  meta: false,
   dynamicMeta: (req: Request, res: Response) => ({
     requestId: res.getHeader('X-Request-Id')
   })
